@@ -1,0 +1,95 @@
+$:~/cse131/adder$ cat test/1.snek
+0
+$:~/cse131/adder$ make test/1.run
+cargo run -- test/1.snek test/1.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running `target/debug/adder test/1.snek test/1.s`
+0
+nasm -f elf64 test/1.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/1.run
+$:~/cse131/adder$ cat test/1.s
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 0
+  ret
+$:~/cse131/adder$ cat test/2.snek
+(sub1 (sub1 (add1 73)))
+$:~/cse131/adder$ make test/2.run
+cargo run -- test/2.snek test/2.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running `target/debug/adder test/2.snek test/2.s`
+72
+nasm -f elf64 test/2.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/2.run
+$:~/cse131/adder$ cat test/2.s
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 73
+add rax, 1
+sub rax, 1
+sub rax, 1
+  ret
+$:~/cse131/adder$ cat test/3.snek
+(sub1 (negate -1))
+$:~/cse131/adder$ make test/3.run
+cargo run -- test/3.snek test/3.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/adder test/3.snek test/3.s`
+0
+nasm -f elf64 test/3.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/3.run
+$:~/cse131/adder$ cat test/3.s
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, -1
+imul rax, rax, -1
+sub rax, 1
+  ret
+$:~/cse131/adder$ cat test/4.snek
+(negate (add1 2147483647))
+$:~/cse131/adder$ make test/4.run
+cargo run -- test/4.snek test/4.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/adder test/4.snek test/4.s`
+-2147483648
+nasm -f elf64 test/4.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/4.run
+$:~/cse131/adder$ cat test/4.s
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 2147483647
+add rax, 1
+imul rax, rax, -1
+  ret
+$:~/cse131/adder$ cat test/5.snek
+(negate (negate 5))
+$:~/cse131/adder$ make test/5.run
+cargo run -- test/5.snek test/5.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/adder test/5.snek test/5.s`
+5
+nasm -f elf64 test/5.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/5.run
+$:~/cse131/adder$ cat test/5.s
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 5
+imul rax, rax, -1
+imul rax, rax, -1
+  ret
+$:~/cse131/adder$
