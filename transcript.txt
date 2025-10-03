@@ -1,31 +1,33 @@
-$:~/cse131/adder$ cat test/1.snek
+[alpan@ieng6-202]:cse131-adder:519$ cat test/1.snek
 0
-$:~/cse131/adder$ make test/1.run
+[alpan@ieng6-202]:cse131-adder:520$ make test/1.run
 cargo run -- test/1.snek test/1.s
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.25s
      Running `target/debug/adder test/1.snek test/1.s`
 0
 nasm -f elf64 test/1.s -o runtime/our_code.o
 ar rcs runtime/libour_code.a runtime/our_code.o
 rustc -L runtime/ runtime/start.rs -o test/1.run
-$:~/cse131/adder$ cat test/1.s
+[alpan@ieng6-202]:cse131-adder:521$ cat test/1.s
 
 section .text
 global our_code_starts_here
 our_code_starts_here:
   mov rax, 0
   ret
-$:~/cse131/adder$ cat test/2.snek
+[alpan@ieng6-202]:cse131-adder:522$ ./test/1.run
+0
+[alpan@ieng6-202]:cse131-adder:523$ cat test/2.snek
 (sub1 (sub1 (add1 73)))
-$:~/cse131/adder$ make test/2.run
+[alpan@ieng6-202]:cse131-adder:524$ make test/2.run
 cargo run -- test/2.snek test/2.s
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.11s
      Running `target/debug/adder test/2.snek test/2.s`
 72
 nasm -f elf64 test/2.s -o runtime/our_code.o
 ar rcs runtime/libour_code.a runtime/our_code.o
 rustc -L runtime/ runtime/start.rs -o test/2.run
-$:~/cse131/adder$ cat test/2.s
+[alpan@ieng6-202]:cse131-adder:525$ cat test/2.s
 
 section .text
 global our_code_starts_here
@@ -35,17 +37,19 @@ add rax, 1
 sub rax, 1
 sub rax, 1
   ret
-$:~/cse131/adder$ cat test/3.snek
+[alpan@ieng6-202]:cse131-adder:526$ ./test/2.run
+72
+[alpan@ieng6-202]:cse131-adder:527$ cat test/3.snek
 (sub1 (negate -1))
-$:~/cse131/adder$ make test/3.run
+[alpan@ieng6-202]:cse131-adder:528$ make test/3.run
 cargo run -- test/3.snek test/3.s
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.16s
      Running `target/debug/adder test/3.snek test/3.s`
 0
 nasm -f elf64 test/3.s -o runtime/our_code.o
 ar rcs runtime/libour_code.a runtime/our_code.o
 rustc -L runtime/ runtime/start.rs -o test/3.run
-$:~/cse131/adder$ cat test/3.s
+[alpan@ieng6-202]:cse131-adder:529$ cat test/3.s
 
 section .text
 global our_code_starts_here
@@ -54,17 +58,19 @@ our_code_starts_here:
 imul rax, rax, -1
 sub rax, 1
   ret
-$:~/cse131/adder$ cat test/4.snek
+[alpan@ieng6-202]:cse131-adder:530$ ./test/3.run
+0
+[alpan@ieng6-202]:cse131-adder:531$ cat test/4.snek
 (negate (add1 2147483647))
-$:~/cse131/adder$ make test/4.run
+[alpan@ieng6-202]:cse131-adder:532$ make test/4.run
 cargo run -- test/4.snek test/4.s
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.10s
      Running `target/debug/adder test/4.snek test/4.s`
 -2147483648
 nasm -f elf64 test/4.s -o runtime/our_code.o
 ar rcs runtime/libour_code.a runtime/our_code.o
 rustc -L runtime/ runtime/start.rs -o test/4.run
-$:~/cse131/adder$ cat test/4.s
+[alpan@ieng6-202]:cse131-adder:533$ cat test/4.s
 
 section .text
 global our_code_starts_here
@@ -73,17 +79,19 @@ our_code_starts_here:
 add rax, 1
 imul rax, rax, -1
   ret
-$:~/cse131/adder$ cat test/5.snek
+[alpan@ieng6-202]:cse131-adder:534$ ./test/4.run
+-2147483648
+[alpan@ieng6-202]:cse131-adder:535$ cat test/5.snek
 (negate (negate 5))
-$:~/cse131/adder$ make test/5.run
+[alpan@ieng6-202]:cse131-adder:536$ make test/5.run
 cargo run -- test/5.snek test/5.s
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.12s
      Running `target/debug/adder test/5.snek test/5.s`
 5
 nasm -f elf64 test/5.s -o runtime/our_code.o
 ar rcs runtime/libour_code.a runtime/our_code.o
 rustc -L runtime/ runtime/start.rs -o test/5.run
-$:~/cse131/adder$ cat test/5.s
+[alpan@ieng6-202]:cse131-adder:537$ cat test/5.s
 
 section .text
 global our_code_starts_here
@@ -92,4 +100,5 @@ our_code_starts_here:
 imul rax, rax, -1
 imul rax, rax, -1
   ret
-$:~/cse131/adder$
+[alpan@ieng6-202]:cse131-adder:538$ ./test/5.run
+5
