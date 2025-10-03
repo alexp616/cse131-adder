@@ -1,1 +1,6 @@
 /target
+*.s
+*.run
+*.out
+*.o
+*.a
